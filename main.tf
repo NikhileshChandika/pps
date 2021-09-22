@@ -16,6 +16,10 @@ provider "azurerm" {
 terraform {
   backend "azurerm" {
     subscription_id  = "f68c820e-5476-4bfb-9a9a-7be3c4be81f2"
+    resource_group_name  = "meaz-prd-hub-inf-terraform-rg"
+    storage_account_name = "meazprdhubinfterraformsa"
+    container_name       = "meazprdhubinfterraformstate"
+    key                  = "pps.terraform.tfstate"
   }
 }
  
