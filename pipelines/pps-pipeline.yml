@@ -1,13 +1,7 @@
 variables:
-  hubsubscription: "meaz-prd-hub-inf"  #Name of Hub Subscription
   devsharedappssubscription: "meaz-dev-shared-apps" #Name of dev shared apps subscription
   project: "meaz-dev-shared-apps" #Name of dev shared apps subscription
   tf_version: "0.14.9" # what version of terraform should be used
-  tf_state_rg: "meaz-prd-hub-inf-terraform-rg" # name of the resource group to create/use for the terraform state file
-  tz_state_location: "australiaeast" # location of the resource group to create/use for the terraform state file
-  tf_state_sa_name: "meazprdhubinfterraformsa" # name of of the storage account to create/use for the terraform state file
-  tf_state_container_name: "meazprdhubinfterraformstate" # name of of the container to create/use for the terraform state file
-  tf_state_tags: ("env=terraform-devops-pipeline" "deployedBy=Azure devops") # tags for the resources above which support tagging
 
 pool:
   vmImage: "ubuntu-latest"
@@ -36,11 +30,6 @@ stages :
                 inputs:
                   provider: 'azurerm'
                   command: 'init'
-                  backendServiceArm: "$(hubsubscription)"
-                  backendAzureRmResourceGroupName: "$(tf_state_rg)"
-                  backendAzureRmStorageAccountName: "$(tf_state_sa_name)"
-                  backendAzureRmContainerName: "$(tf_state_container_name)"
-                  backendAzureRmKey: "$(project)tfstate"
 
               - task: TerraformTaskV1@0
                 displayName: 'validate'
