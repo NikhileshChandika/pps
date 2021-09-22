@@ -23,10 +23,10 @@ data "azurerm_client_config" "current" {}
 
 module "azure_sql" {
   source                        = "github.com/NikhileshChandika/terraform/modules/azure_sql"
-  env                           = meaz-dev-shared-apps
-  environment                   = dev
-  project_code_name             = pps
-  storage_account_name          = meazdevsharedappsppssqlsa
-  sql_server_name               = pps
-  sql_database_name             = pps
+  env                           = "meaz-dev-shared-apps"
+  environment                   = "dev"
+  project_code_name             = "pps"
+  storage_account_name          = "meazdevsharedappsppssqlsa"
+  sql_server_name               = "pps"
+  sql_database_name             = "pps"
 }
