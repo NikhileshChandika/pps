@@ -16,7 +16,7 @@ stages :
 
   - stage: "Terraform_Validate_And_Deploy"
     jobs:
-    - deployment: "validate_and_deploy_pps"
+    - deployment: "PPS_Deployment"
       continueOnError: false
       environment: "azure-dev-pps"
       strategy:
