@@ -27,12 +27,12 @@ stages :
               - checkout: self
 
               - task: TerraformInstaller@0
-                displayName: 'terraform install'
+                displayName: 'install'
                 inputs:
                   terraformVersion: "$(tf_version)"
 
               - task: TerraformTaskV1@0
-                displayName: "$(project)_init"
+                displayName: "init"
                 inputs:
                   provider: 'azurerm'
                   command: 'init'
@@ -43,20 +43,20 @@ stages :
                   backendAzureRmKey: "$(project)tfstate"
 
               - task: TerraformTaskV1@0
-                displayName: '$(project)_validate'
+                displayName: 'validate'
                 inputs:
                    provider: 'azurerm'
                    command: 'validate'
 
               - task: TerraformTaskV1@0
-                displayName: "$(project)_plan"
+                displayName: "plan"
                 inputs:
                   provider: 'azurerm'
                   command: 'plan'
                   environmentServiceNameAzureRM: "$(devsharedappssubscription)"
 
               - task: TerraformTaskV1@0
-                displayName: "$(project)_apply"
+                displayName: "apply"
                 inputs:
                   provider: 'azurerm'
                   command: 'apply'
