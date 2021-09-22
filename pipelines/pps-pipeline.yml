@@ -1,0 +1,66 @@
+variables:
+  hubsubscription: "meaz-prd-hub-inf"  #Name of Hub Subscription
+  devsharedappssubscription: "meaz-dev-shared-apps" #Name of dev shared apps subscription
+  project: "meaz-dev-shared-apps" #Name of dev shared apps subscription
+  tf_version: "0.14.9" # what version of terraform should be used
+  tf_state_rg: "meaz-prd-hub-inf-terraform-rg" # name of the resource group to create/use for the terraform state file
+  tz_state_location: "australiaeast" # location of the resource group to create/use for the terraform state file
+  tf_state_sa_name: "meazprdhubinfterraformsa" # name of of the storage account to create/use for the terraform state file
+  tf_state_container_name: "meazprdhubinfterraformstate" # name of of the container to create/use for the terraform state file
+  tf_state_tags: ("env=terraform-devops-pipeline" "deployedBy=Azure devops") # tags for the resources above which support tagging
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages :
+
+  - stage: "Terraform_Validate_And_Deploy"
+    jobs:
+    - deployment: "validate_and_deploy_pps"
+      continueOnError: false
+      environment: "azure-dev-pps"
+      strategy:
+       runOnce:
+         deploy:
+            steps:
+
+              - checkout: self
+
+              - task: TerraformInstaller@0
+                displayName: 'terraform install'
+                inputs:
+                  terraformVersion: "$(tf_version)"
+
+              - task: TerraformTaskV1@0
+                displayName: "$(project)_init"
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: "$(hubsubscription)"
+                  backendAzureRmResourceGroupName: "$(tf_state_rg)"
+                  backendAzureRmStorageAccountName: "$(tf_state_sa_name)"
+                  backendAzureRmContainerName: "$(tf_state_container_name)"
+                  backendAzureRmKey: "$(project)tfstate"
+
+              - task: TerraformTaskV1@0
+                displayName: '$(project)_validate'
+                inputs:
+                   provider: 'azurerm'
+                   command: 'validate'
+
+              - task: TerraformTaskV1@0
+                displayName: "$(project)_plan"
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  environmentServiceNameAzureRM: "$(devsharedappssubscription)"
+
+              - task: TerraformTaskV1@0
+                displayName: "$(project)_apply"
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  environmentServiceNameAzureRM: "$(devsharedappssubscription)"
+
+
+      
