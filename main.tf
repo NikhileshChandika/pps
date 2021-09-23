@@ -24,7 +24,7 @@ module "azure_sql" {
   env                           = "meaz-dev-shared-apps"
   environment                   = "dev"
   project_code_name             = "pps"
-  storage_account_name          = "meazdevsharedappsppssqlsa"
+  storage_account_name          = "meazdevshdappsppssql"
   sql_server_name               = "pps"
   sql_database_name             = "pps"
 }
