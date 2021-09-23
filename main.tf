@@ -13,17 +13,11 @@ provider "azurerm" {
   features {}
 }
     
-terraform {
-  backend "azurerm" {
-    subscription_id  = "f68c820e-5476-4bfb-9a9a-7be3c4be81f2"
-    resource_group_name  = "meaz-prd-hub-inf-terraform-rg"
-    storage_account_name = "meazprdhubinfterraformsa"
-    container_name       = "meazprdhubinfterraformstate"
-    key                  = "pps.terraform.tfstate"
-  }
-}
+# terraform {
+#   backend "azurerm" {}
+# }
  
-data "azurerm_client_config" "current" {}
+# data "azurerm_client_config" "current" {}
 
 module "azure_sql" {
   source                        = "github.com/NikhileshChandika/terraform/modules/azure_sql"
